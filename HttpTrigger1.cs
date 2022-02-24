@@ -12,6 +12,9 @@ namespace Company.Function
 {
     public static class HttpTrigger1
     {
+
+        private record Message(string Title, string Name, DateTime date);
+
         [FunctionName("HttpTrigger1")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
@@ -25,11 +28,13 @@ namespace Company.Function
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully!";
+            Message responseMessage = string.IsNullOrEmpty(name)
+                ? new("This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.", null, DateTime.Now)
+                : new($"Hello, {name}. This HTTP triggered function executed successfully!",name, DateTime.Now);
 
             return new OkObjectResult(responseMessage);
         }
     }
+
+
 }
