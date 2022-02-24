@@ -41,7 +41,7 @@ namespace Company.Function
                 .RuleFor(x=>x.Email, x=>x.Person.Email);
 
             persons = fake.Generate(int.Parse(qty));
-            return new OkObjectResult("simple");
+            return new OkObjectResult(persons);
         }
     }
 
